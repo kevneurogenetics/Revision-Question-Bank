@@ -1,0 +1,404 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2639
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\froman\fcharset0 Times-Roman;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 <!DOCTYPE html>\
+<html lang="en">\
+<head>\
+    <meta charset="UTF-8">\
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">\
+    <title>Interactive Quiz</title>\
+    <style>\
+        body \{\
+            font-family: Arial, sans-serif;\
+            margin: 20px;\
+            background-color: #f9f9f9;\
+            color: #333;\
+        \}\
+        .header \{\
+            display: flex;\
+            justify-content: space-between;\
+            align-items: center;\
+        \}\
+        .header img \{\
+            max-width: 150px;\
+            border-radius: 8px;\
+        \}\
+        .question-container \{\
+            margin-bottom: 30px;\
+            padding: 15px;\
+            border: 1px solid #ddd;\
+            background-color: #fff;\
+            border-radius: 8px;\
+        \}\
+        .question-title \{\
+            font-weight: bold;\
+        \}\
+        .explanation \{\
+            margin-top: 10px;\
+            font-style: italic;\
+        \}\
+        .correct \{\
+            color: green;\
+        \}\
+        .incorrect \{\
+            color: red;\
+        \}\
+        .section-break \{\
+            margin: 40px 0;\
+            padding: 10px;\
+            border: 2px solid #007BFF;\
+            background-color: #f0f8ff;\
+            border-radius: 8px;\
+            text-align: center;\
+            font-weight: bold;\
+            color: #007BFF;\
+        \}\
+        button \{\
+            margin-top: 10px;\
+            padding: 10px 15px;\
+            background-color: #007BFF;\
+            color: white;\
+            border: none;\
+            border-radius: 5px;\
+            cursor: pointer;\
+        \}\
+        button:hover \{\
+            background-color: #0056b3;\
+        \}\
+    </style>\
+</head>\
+<body>\
+    <div class="header">\
+        <h1>Interactive Quiz</h1>\
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Oxford_City_Centre.jpg" alt="Oxford City">\
+    </div>\
+    <div id="questionBank"></div>\
+    <button id="submitButton" style="display: none;">Submit and View Results</button>\
+    <div id="resultContainer" style="display: none;"></div>\
+\
+    <script>\
+        const questions = [\
+            \
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf0 \expnd0\expndtw0\kerning0
+ \{\
+                question: "Which of the following is a key ICD-11 criterion for depression under the Affective Cluster?",\
+                options: ["Difficulty concentrating", "Depressed mood", "Altered sleep", "Psychomotor agitation", "Increased self-esteem"],\
+                correctIndex: 1,\
+                explanation: "Depressed mood is a hallmark of the affective cluster, focusing on emotional changes. Other options, like difficulty concentrating or psychomotor agitation, belong to cognitive behavioral or neurovegetative clusters."\
+            \},\
+            \{\
+                question: "What is the mean age of onset for unipolar depression?",\
+                options: ["17 years", "25 years", "30 years", "40 years", "50 years"],\
+                correctIndex: 1,\
+                explanation: "The mean age of onset for unipolar depression is 25 years, unlike bipolar disorder, which typically begins around 17 years."\
+            \},\
+            \{\
+                question: "Which neurotransmitter system is implicated in the pathophysiology of depression?",\
+                options: ["Dopamine", "Acetylcholine", "Monoamines", "GABA", "Glutamate"],\
+                correctIndex: 2,\
+                explanation: "Depression is linked to abnormalities in monoamines (serotonin, norepinephrine, dopamine), unlike GABA or acetylcholine systems, which are primarily associated with anxiety or memory disorders."\
+            \},\
+            \{\
+                question: "Which medication is considered first-line treatment for unipolar depression?",\
+                options: ["Lithium", "Valproate", "SSRIs", "Quetiapine", "Lamotrigine"],\
+                correctIndex: 2,\
+                explanation: "SSRIs are the first-line pharmacological treatment for unipolar depression, while lithium and valproate are more relevant to bipolar disorder."\
+            \},\
+            \{\
+                question: "What is a common feature of mania described by John Ruskin?",\
+                options: ["Altered appetite", "Flight of ideas", "Decreased energy", "Feelings of worthlessness", "Depressed mood"],\
+                correctIndex: 1,\
+                explanation: "Flight of ideas reflects racing thoughts in mania. Other options describe symptoms of depression or general neurovegetative changes."\
+            \},\
+            \{\
+                question: "What is the lifetime risk for bipolar disorder?",\
+                options: ["1-2%", "5-10%", "10-20%", "20-25%", "30-35%"],\
+                correctIndex: 0,\
+                explanation: "Bipolar disorder affects 1-2% of the population, much lower than unipolar depression (10-20%)."\
+            \},\
+            \{\
+                question: "Which pharmacological treatment is most effective for long-term mood stability in bipolar disorder?",\
+                options: ["Lamotrigine", "Quetiapine", "Lithium", "Valproate", "Fluoxetine"],\
+                correctIndex: 2,\
+                explanation: "Lithium has the best evidence for mood stabilization in bipolar disorder. Other options are effective but less reliable long-term."\
+            \},\
+            \{\
+                question: "Which psychosocial factor is particularly important in the pathogenesis of bipolar disorder?",\
+                options: ["Perfectionism", "Substance misuse", "Low plasma tryptophan", "Childhood maltreatment", "Hypercortisolemia"],\
+                correctIndex: 3,\
+                explanation: "Childhood maltreatment is a key psychosocial factor in bipolar disorder, unlike biological factors such as hypercortisolemia or tryptophan depletion."\
+            \},\
+            \{\
+                question: "Which biological marker is associated with hypercortisolemia in depression?",\
+                options: ["Decreased plasma tryptophan", "Elevated cortisol levels on waking", "Increased serotonin transporter binding", "Elevated dopamine levels", "Decreased inflammation"],\
+                correctIndex: 1,\
+                explanation: "Hypercortisolemia in depression is marked by excessive cortisol secretion, often linked to stress response dysregulation."\
+            \},\
+            \{\
+                question: "Which neural circuit abnormalities are common in depression?",\
+                options: ["Overactivity of prefrontal cortex", "Overactivity of limbic system", "Overactivity of the dopamine pathway", "Increased cortical regulation", "Decreased activity of default mode network"],\
+                correctIndex: 1,\
+                explanation: "Depression shows limbic system overactivity (emotional perception) and underactivity of cortical regulatory areas, disrupting mood regulation."\
+            \},\
+    \{\
+        question: "Which neurotransmitter system is associated with ketamine's mechanism of action?",\
+        options: ["Dopamine", "Glutamate", "Serotonin", "GABA", "Acetylcholine"],\
+        correctIndex: 1,\
+        explanation: "Ketamine blocks the NMDA receptor, which is part of the glutamate system, causing a surge in frontal glutamate levels and contributing to its antidepressant effects."\
+    \},\
+    \{\
+        question: "What is a key predictor of a positive response to ECT?",\
+        options: ["Spike and wave pattern at 1 Hz", "Postictal suppression", "Low seizure amplitude", "High baseline dopamine levels", "Duration of seizure exceeding 40 seconds"],\
+        correctIndex: 1,\
+        explanation: "Postictal suppression, along with high seizure amplitude and synchrony, predicts a better response to ECT."\
+    \},\
+    \{\
+        question: "Which population demonstrates the highest rate of ECT use?",\
+        options: ["England and Wales", "Canada", "Australia", "Sweden", "Germany"],\
+        correctIndex: 3,\
+        explanation: "ECT usage rates per 100,000 people are highest in Sweden (41), followed by Australia and Canada."\
+    \},\
+    \{\
+        question: "What is a notable long-term side effect of ECT?",\
+        options: ["Severe depression", "Autobiographical memory loss", "Increased suicide risk", "Permanent anterograde amnesia", "Chronic fatigue"],\
+        correctIndex: 1,\
+        explanation: "ECT can cause retrograde autobiographical memory loss, though this is less common and typically resolves within two months."\
+    \},\
+    \{\
+        question: "What is ketamine\'92s acute antidepressant effect attributed to?",\
+        options: ["Increased dopamine synthesis", "Frontal glutamate surge", "Suppression of GABA", "Inhibition of serotonin receptors", "Enhanced norepinephrine release"],\
+        correctIndex: 1,\
+        explanation: "Ketamine causes a frontal glutamate surge that contributes to rapid neuroplastic changes and symptom relief."\
+    \},\
+    \{\
+        question: "What is the recommended starting approach for ECT in patients with catatonia?",\
+        options: ["Bilateral ECT", "Right unilateral ECT", "Low-dose ECT", "Transcranial Magnetic Stimulation", "Repetitive ECT"],\
+        correctIndex: 0,\
+        explanation: "Bilateral ECT is recommended as a first-line treatment for patients with catatonia or severe psychosis for its rapid efficacy."\
+    \},\
+    \{\
+        question: "What is a key neural abnormality in depression identified via functional imaging?",\
+        options: ["Overactivity of the prefrontal cortex", "Overactivity of the limbic system", "Decreased resting state activity of the default mode network", "Overconnectivity of cortical regulatory areas", "Underactivity of the striatum"],\
+        correctIndex: 1,\
+        explanation: "Depression is associated with limbic system overactivity, which influences emotional perception and regulation."\
+    \},\
+    \{\
+        question: "What proportion of ECT users experience severe memory problems after treatment?",\
+        options: ["1%", "2%", "10%", "20%", "25%"],\
+        correctIndex: 1,\
+        explanation: "Severe memory problems after ECT are rare, affecting about 2% of patients."\
+    \},\
+    \{\
+        question: "What is the relapse rate at 6 months following ECT treatment?",\
+        options: ["25%", "38%", "50%", "56%", "60%"],\
+        correctIndex: 1,\
+        explanation: "Approximately 38% of patients relapse within 6 months of ECT treatment."\
+    \},\
+    \{\
+        question: "How does ketamine improve suicidal ideation?",\
+        options: ["Blocking serotonin uptake", "Enhancing frontal neuroplasticity", "Restoring social rank", "Suppressing dopamine release", "Activating NMDA receptors"],\
+        correctIndex: 2,\
+        explanation: "Ketamine reduces self-critical rumination and restores a sense of social rank, contributing to a decrease in suicidal ideation."\
+    \},\
+    \{\
+        question: "What percentage of people with schizophrenia die by suicide?",\
+        options: ["5%", "10%", "15%", "20%", "25%"],\
+        correctIndex: 2,\
+        explanation: "Approximately 15% of individuals with schizophrenia die by suicide, highlighting its severe impact on mental health and well-being."\
+    \},\
+    \{\
+        question: "Which symptom is part of Schneider\'92s first-rank symptoms of schizophrenia?",\
+        options: ["Visual hallucinations", "Running commentary", "Mood swings", "Lack of interest", "Difficulty concentrating"],\
+        correctIndex: 1,\
+        explanation: "Schneider's first-rank symptoms include auditory hallucinations like running commentary, thought withdrawal, and delusional perceptions."\
+    \},\
+    \{\
+        question: "What is the global prevalence of schizophrenia?",\
+        options: ["0.5%", "1%", "2%", "5%", "10%"],\
+        correctIndex: 1,\
+        explanation: "Schizophrenia affects about 1% of the global population, making it a common but severe mental health disorder."\
+    \},\
+    \{\
+        question: "Which neurotransmitter dysfunction is a model for schizophrenia?",\
+        options: ["Serotonin", "Dopamine", "Glutamate", "GABA", "Acetylcholine"],\
+        correctIndex: 2,\
+        explanation: "NMDA receptor dysfunction within the glutamate system is a key model for understanding the pathophysiology of schizophrenia."\
+    \},\
+    \{\
+        question: "Which factor is NOT associated with an increased risk of schizophrenia?",\
+        options: ["Cannabis use", "Urban living", "Childhood trauma", "Varicella Zoster Virus infection", "Family history"],\
+        correctIndex: 3,\
+        explanation: "While many infections are associated with schizophrenia risk, Varicella Zoster Virus is not one of them."\
+    \},\
+    \{\
+        question: "What is a key feature of negative symptoms in schizophrenia?",\
+        options: ["Hallucinations", "Delusions", "Anhedonia", "Catatonia", "Thought broadcast"],\
+        correctIndex: 2,\
+        explanation: "Negative symptoms, such as anhedonia, reflect diminished emotional expression or motivation, in contrast to positive symptoms like hallucinations."\
+    \},\
+    \{\
+        question: "What is the heritability rate for schizophrenia in monozygotic twins?",\
+        options: ["12%", "20%", "40%", "47%", "60%"],\
+        correctIndex: 3,\
+        explanation: "Monozygotic twins have a 47% concordance rate for schizophrenia, highlighting the genetic contribution to the disorder."\
+    \},\
+    \{\
+        question: "Which environmental factor is associated with increased schizophrenia risk?",\
+        options: ["Living in a rural area", "Lack of education", "Early childhood infections", "High socioeconomic status", "Excessive screen time"],\
+        correctIndex: 2,\
+        explanation: "Early infections and immune activation during development are linked to an increased risk of schizophrenia."\
+    \},\
+    \{\
+        question: "Which pathogen has been positively associated with schizophrenia?",\
+        options: ["Varicella Zoster Virus", "Toxoplasma gondii", "Parvovirus", "HTLV", "BK Virus"],\
+        correctIndex: 1,\
+        explanation: "Toxoplasma gondii is one of the infections associated with an increased risk of schizophrenia, likely due to neuroinflammation."\
+    \},\
+    \{\
+        question: "Which brain region shows reduced activity in schizophrenia according to fMRI studies?",\
+        options: ["Limbic system", "Basal ganglia", "Dorsolateral prefrontal cortex", "Default mode network", "Hippocampus"],\
+        correctIndex: 2,\
+        explanation: "Functional imaging shows reduced activity in the dorsolateral prefrontal cortex, associated with cognitive impairments in schizophrenia."\
+    \},\
+    \{\
+        question: "What is the principle mechanism by which TMS influences neural activity?",\
+        options: ["Suppression of synaptic activity", "Generation of magnetic fields altering cortical tissue currents", "Excitation of subcortical structures", "Inhibition of neurotransmitter release", "Enhancement of resting membrane potential"],\
+        correctIndex: 1,\
+        explanation: "TMS generates a magnetic field that induces an electric field in the underlying cortex, altering the normal pattern of neural activity."\
+    \},\
+    \{\
+        question: "Which of the following is a key advantage of 'virtual lesion' TMS over natural lesions?",\
+        options: ["Permanent disruption of neural function", "Increased spatial spread of disruption", "Reversibility and non-invasiveness", "Ability to target subcortical regions", "Long-lasting functional reorganization"],\
+        correctIndex: 2,\
+        explanation: "'Virtual lesion' TMS is reversible, non-invasive, and avoids complications of chronic lesions, allowing safe testing in healthy brains."\
+    \},\
+    \{\
+        question: "What is the main therapeutic goal of anodal tDCS in stroke rehabilitation?",\
+        options: ["Decrease cortical excitability in the non-lesioned hemisphere", "Increase cortical excitability in the lesioned hemisphere", "Enhance motor neuron firing rates", "Block maladaptive neuroplasticity", "Induce long-term depression in cortical circuits"],\
+        correctIndex: 1,\
+        explanation: "Anodal tDCS is used to increase excitability in the lesioned hemisphere, aiding recovery of motor function."\
+    \},\
+    \{\
+        question: "Which brain region is commonly targeted in TMS therapy for depression?",\
+        options: ["Ventral tegmental area", "Amygdala", "Dorsolateral prefrontal cortex (DLPFC)", "Hippocampus", "Primary motor cortex"],\
+        correctIndex: 2,\
+        explanation: "TMS for depression targets the DLPFC to modulate mood-related circuits."\
+    \},\
+    \{\
+        question: "What effect does cathodal tDCS typically have on cortical excitability?",\
+        options: ["Increases excitability", "Decreases excitability", "No effect on excitability", "Modulates synaptic density", "Enhances synaptic plasticity"],\
+        correctIndex: 1,\
+        explanation: "Cathodal tDCS decreases cortical excitability by modulating resting membrane potential."\
+    \},\
+    \{\
+        question: "What is a key feature of distributed networks in brain function, as studied using TMS?",\
+        options: ["Subcortical dominance over cortical function", "Localization of behavior to single brain regions", "Information transmission at millisecond speeds", "Absence of inter-regional connectivity", "Static representation of cognitive processes"],\
+        correctIndex: 2,\
+        explanation: "Distributed networks transmit information with high temporal precision across interconnected cortical areas."\
+    \},\
+    \{\
+        question: "Which factor influences the duration of effects in tDCS stimulation?",\
+        options: ["Stimulus polarity only", "Duration and intensity of stimulation", "Only the site of stimulation", "Frequency of neural oscillations", "Number of motor neurons recruited"],\
+        correctIndex: 1,\
+        explanation: "Longer durations and higher current intensities lead to more pronounced and lasting effects, though homeostatic mechanisms may counteract excessive changes."\
+    \},\
+    \{\
+        question: "What is the key mechanism underlying plasticity induced by anodal tDCS?",\
+        options: ["Modulation of ion channel density", "Homeostatic reduction in cortical activity", "Promotion of BDNF-mediated synaptic plasticity", "Suppression of cortical neurogenesis", "Inhibition of cortical interneurons"],\
+        correctIndex: 2,\
+        explanation: "Anodal tDCS enhances synaptic plasticity through BDNF activity-dependent mechanisms."\
+    \},\
+    \{\
+        question: "What is the primary benefit of combining TMS with imaging techniques like fMRI?",\
+        options: ["Increase in therapeutic efficacy", "Real-time monitoring of neural activity", "Precise targeting of subcortical structures", "Modulation of neurotransmitter levels", "Long-term monitoring of structural changes"],\
+        correctIndex: 1,\
+        explanation: "Combining TMS with imaging enables real-time tracking of changes in brain activity and connectivity."\
+    \},\
+    \{\
+        question: "Which of the following is a proposed therapeutic use of bifrontal tDCS?",\
+        options: ["Enhancing visuomotor skill learning", "Reducing threat vigilance in anxiety", "Improving motor coordination in ataxia", "Blocking maladaptive synaptic plasticity", "Treating Parkinson\'92s disease tremors"],\
+        correctIndex: 1,\
+        explanation: "Bifrontal tDCS is hypothesized to reduce threat reactivity by modulating fronto-parietal and amygdala activity."\
+    \}
+\f0 \kerning1\expnd0\expndtw0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0         ];\
+\
+        let score = 0;\
+        let answeredQuestions = 0;\
+\
+        const questionBank = document.getElementById("questionBank");\
+        const resultContainer = document.getElementById("resultContainer");\
+        const submitButton = document.getElementById("submitButton");\
+\
+        questions.forEach((q, index) => \{\
+            // Add a section break every 10 questions\
+            if (index % 10 === 0 && index !== 0) \{\
+                const sectionBreak = document.createElement("div");\
+                sectionBreak.classList.add("section-break");\
+                sectionBreak.textContent = "Next Lecture";\
+                questionBank.appendChild(sectionBreak);\
+            \}\
+\
+            const questionContainer = document.createElement("div");\
+            questionContainer.classList.add("question-container");\
+            questionContainer.dataset.index = index;\
+\
+            const questionTitle = document.createElement("p");\
+            questionTitle.classList.add("question-title");\
+            questionTitle.textContent = `$\{index + 1\}. $\{q.question\}`;\
+            questionContainer.appendChild(questionTitle);\
+\
+            q.options.forEach((option, i) => \{\
+                const optionButton = document.createElement("button");\
+                optionButton.textContent = option;\
+                optionButton.addEventListener("click", () => handleAnswerClick(q, i, questionContainer, optionButton));\
+                questionContainer.appendChild(optionButton);\
+            \});\
+\
+            questionBank.appendChild(questionContainer);\
+        \});\
+\
+        function handleAnswerClick(question, selectedIndex, container, button) \{\
+            if (container.classList.contains("answered")) return;\
+            container.classList.add("answered");\
+            answeredQuestions++;\
+\
+            const explanationDiv = document.createElement("div");\
+            explanationDiv.classList.add("explanation");\
+\
+            if (selectedIndex === question.correctIndex) \{\
+                explanationDiv.textContent = "Correct! " + question.explanation;\
+                explanationDiv.classList.add("correct");\
+                container.classList.add("correct");\
+                score++;\
+            \} else \{\
+                explanationDiv.textContent = "Incorrect. " + question.explanation;\
+                explanationDiv.classList.add("incorrect");\
+                container.classList.add("incorrect");\
+            \}\
+\
+            container.appendChild(explanationDiv);\
+\
+            if (answeredQuestions === questions.length) \{\
+                submitButton.style.display = "block";\
+            \}\
+        \}\
+\
+        submitButton.addEventListener("click", () => \{\
+            resultContainer.style.display = "block";\
+            resultContainer.innerHTML = `<h2>Your Score: $\{score\}/$\{questions.length\}</h2>`;\
+            document.querySelectorAll(".question-container").forEach(container => \{\
+                container.style.borderColor = container.classList.contains("correct") ? "green" : "red";\
+            \});\
+        \});\
+    </script>\
+</body>\
+</html>\
+}
